@@ -152,15 +152,15 @@ This project uses [Go Modules](https://github.com/golang/go/wiki/Modules) for de
 &nbsp;&nbsp;
 ### Build ###
 
-Clone repository to: $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
+Clone repository to: $GOPATH/src/github.com/hhakkaev/terraform-provider-barracudawaf
 ```shell
-$ mkdir -p $GOPATH/src/github.com/barracudanetworks; cd $GOPATH/src/github.com/barracudanetworks
-$ git clone https://github.com/barracudanetworks/terraform-provider-barracudawaf.git
+$ mkdir -p $GOPATH/src/github.com/hhakkaev; cd $GOPATH/src/github.com/hhakkaev
+$ git clone https://github.com/hhakkaev/terraform-provider-barracudawaf.git
 ```
 
 Enter the provider directory and build the provider
 ```shell
-cd $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
+cd $GOPATH/src/github.com/hhakkaev/terraform-provider-barracudawaf
 make build
 ```
 
@@ -168,7 +168,7 @@ make build
 ### Install ###
 
 ```shell
-$ cd $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
+$ cd $GOPATH/src/github.com/hhakkaev/terraform-provider-barracudawaf
 $ make install
 
 ```
@@ -183,12 +183,12 @@ If you're building the provider, follow the instructions to install it as a plug
 
 If you wish to work on the provider, you'll first need Go installed on your machine (version 1.15 is required). You'll also need to correctly setup a GOPATH, as well as adding `$GOPATH/bin` to your `$PATH`.
 
-To compile the provider, run make build. This will create a binary with name `terraform-provider-barracudawaf` in `$GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf` directory.
+To compile the provider, run make build. This will create a binary with name `terraform-provider-barracudawaf` in `$GOPATH/src/github.com/hhakkaev/terraform-provider-barracudawaf` directory.
 
 ```shell
 $ make build
 ...
-$ $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
+$ $GOPATH/src/github.com/hhakkaev/terraform-provider-barracudawaf
 ...
 
 ```
@@ -196,7 +196,7 @@ $ $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
 &nbsp;
 # Using the binary instead of building it from source #
 
-Download the binary added under [releases](https://github.com/barracudanetworks/terraform-provider-barracudawaf/releases), and follow below :
+Download the binary added under [releases](https://github.com/hhakkaev/terraform-provider-barracudawaf/releases), and follow below :
 
 Copy the downloaded binary `terraform-provider-barracudawaf_v<tag>` into `plugins` Terraform directory.
 

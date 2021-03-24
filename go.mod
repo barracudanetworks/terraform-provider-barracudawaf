@@ -1,4 +1,4 @@
-module github.com/barracudanetworks/terraform-provider-barracudawaf
+module github.com/hhakkaev/terraform-provider-barracudawaf
 
 go 1.16
 

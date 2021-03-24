@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/barracudanetworks/terraform-provider-barracudawaf/barracudawaf"
+	"github.com/hhakkaev/terraform-provider-barracudawaf/barracudawaf"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 
