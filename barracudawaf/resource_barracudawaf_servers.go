@@ -10,19 +10,6 @@ import (
 
 var (
 	subResourceServersParams = map[string][]string{
-		"in_band_health_checks": {"max_other_failure", "max_refused", "max_timeout_failure", "max_http_errors"},
-		"redirect":              {},
-		"advanced_configuration": {
-			"client_impersonation",
-			"source_ip_to_connect",
-			"max_connections",
-			"max_establishing_connections",
-			"max_requests",
-			"max_keepalive_requests",
-			"max_spare_connections",
-			"timeout",
-		},
-		"load_balancing": {"backup_server", "weight"},
 		"ssl_policy": {
 			"client_certificate",
 			"enable_ssl_compatibility_mode",
@@ -34,16 +21,6 @@ var (
 			"enable_tls_1_1",
 			"enable_tls_1_2",
 			"enable_tls_1_3",
-		},
-		"connection_pooling":        {"keepalive_timeout", "enable_connection_pooling"},
-		"out_of_band_health_checks": {"interval", "enable_oob_health_checks"},
-		"application_layer_health_checks": {
-			"additional_headers",
-			"match_content_string",
-			"method",
-			"domain",
-			"status_code",
-			"url",
 		},
 	}
 )
@@ -65,81 +42,6 @@ func resourceCudaWAFServers() *schema.Resource {
 			"port":            {Type: schema.TypeString, Optional: true, Description: "Server Port"},
 			"status":          {Type: schema.TypeString, Optional: true, Description: "Status"},
 			"resolved_ips":    {Type: schema.TypeString, Optional: true},
-			"in_band_health_checks": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"max_other_failure": {Type: schema.TypeString, Optional: true, Description: "Max Other Failure"},
-						"max_refused":       {Type: schema.TypeString, Optional: true, Description: "Max Refused"},
-						"max_timeout_failure": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Timeout Failures",
-						},
-						"max_http_errors": {Type: schema.TypeString, Optional: true, Description: "Max HTTP Errors"},
-					},
-				},
-			},
-			"redirect": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem:     &schema.Resource{Schema: map[string]*schema.Schema{}},
-			},
-			"advanced_configuration": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"client_impersonation": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Client Impersonation",
-						},
-						"source_ip_to_connect": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Source IP to Connect",
-						},
-						"max_connections": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Connections",
-						},
-						"max_establishing_connections": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Establishing Connections",
-						},
-						"max_requests": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Requests",
-						},
-						"max_keepalive_requests": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Keepalive Requests",
-						},
-						"max_spare_connections": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Max Spare Connections",
-						},
-						"timeout": {Type: schema.TypeString, Optional: true, Description: "Timeout"},
-					},
-				},
-			},
-			"load_balancing": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"backup_server": {Type: schema.TypeString, Optional: true, Description: "Backup Appliance"},
-						"weight":        {Type: schema.TypeString, Optional: true, Description: "WRR Weight"},
-					},
-				},
-			},
 			"ssl_policy": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -183,56 +85,6 @@ func resourceCudaWAFServers() *schema.Resource {
 						"enable_tls_1_1": {Type: schema.TypeString, Optional: true, Description: "TLS 1.1"},
 						"enable_tls_1_2": {Type: schema.TypeString, Optional: true, Description: "TLS 1.2"},
 						"enable_tls_1_3": {Type: schema.TypeString, Optional: true, Description: "TLS 1.3"},
-					},
-				},
-			},
-			"connection_pooling": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"keepalive_timeout": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Keepalive Timeout",
-						},
-						"enable_connection_pooling": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Enable Connection Pooling",
-						},
-					},
-				},
-			},
-			"out_of_band_health_checks": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"interval": {Type: schema.TypeString, Optional: true, Description: "Interval"},
-						"enable_oob_health_checks": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Enable OOB Health Checks",
-						},
-					},
-				},
-			},
-			"application_layer_health_checks": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"additional_headers": {Type: schema.TypeString, Optional: true, Description: "Additional Headers"},
-						"match_content_string": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Match content String",
-						},
-						"method":      {Type: schema.TypeString, Optional: true, Description: "Method"},
-						"domain":      {Type: schema.TypeString, Optional: true, Description: "Domain"},
-						"status_code": {Type: schema.TypeString, Optional: true, Description: "Status Code"},
-						"url":         {Type: schema.TypeString, Optional: true, Description: "URL"},
 					},
 				},
 			},

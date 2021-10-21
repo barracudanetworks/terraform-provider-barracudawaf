@@ -9,17 +9,7 @@ import (
 )
 
 var (
-	subResourceSignedCertificateParams = map[string][]string{
-		"ocsp_stapling": {
-			"cache_timeout",
-			"clock_skew",
-			"error_timeout",
-			"issuer_certificate",
-			"ocsp_stapling",
-			"override_ocsp_responder",
-			"ocsp_issuer_certificate",
-		},
-	}
+	subResourceSignedCertificateParams = map[string][]string{}
 )
 
 func resourceCudaWAFSignedCertificate() *schema.Resource {
@@ -54,33 +44,6 @@ func resourceCudaWAFSignedCertificate() *schema.Resource {
 			"allow_private_key_export":  {Type: schema.TypeString, Optional: true},
 			"schedule_renewal_day":      {Type: schema.TypeString, Optional: true, Description: "None"},
 			"serial":                    {Type: schema.TypeString, Optional: true},
-			"ocsp_stapling": {
-				Type:     schema.TypeList,
-				Optional: true,
-				Elem: &schema.Resource{
-					Schema: map[string]*schema.Schema{
-						"cache_timeout": {Type: schema.TypeString, Required: true, Description: "Cache timeout"},
-						"clock_skew":    {Type: schema.TypeString, Optional: true, Description: "Clock Skew"},
-						"error_timeout": {Type: schema.TypeString, Optional: true, Description: "Error Timeout"},
-						"issuer_certificate": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "OCSP Issuer Cetificate",
-						},
-						"ocsp_stapling": {Type: schema.TypeString, Optional: true, Description: "OCSP Stapling"},
-						"override_ocsp_responder": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "OCSP Responder URL",
-						},
-						"ocsp_issuer_certificate": {
-							Type:        schema.TypeString,
-							Optional:    true,
-							Description: "Ocsp Issuer Certificate content as a Base64 encoded string.",
-						},
-					},
-				},
-			},
 		},
 
 		Description: "`barracudawaf_signed_certificate` manages `Signed Certificate` on the Barracuda Web Application Firewall.",

@@ -31,25 +31,8 @@ description: |-
 - **intermediary_certificates** (String)
 - **key_type** (String) Select Key Type:
 - **name** (String) Certificate Name
-- **ocsp_stapling** (Block List) (see [below for nested schema](#nestedblock--ocsp_stapling))
 - **schedule_renewal_day** (String) None
 - **serial** (String)
 - **signed_certificate** (String)
-
-<a id="nestedblock--ocsp_stapling"></a>
-### Nested Schema for `ocsp_stapling`
-
-Required:
-
-- **cache_timeout** (String) Cache timeout
-
-Optional:
-
-- **clock_skew** (String) Clock Skew
-- **error_timeout** (String) Error Timeout
-- **issuer_certificate** (String) OCSP Issuer Cetificate
-- **ocsp_issuer_certificate** (String) Ocsp Issuer Certificate content as a Base64 encoded string.
-- **ocsp_stapling** (String) OCSP Stapling
-- **override_ocsp_responder** (String) OCSP Responder URL
 
 
