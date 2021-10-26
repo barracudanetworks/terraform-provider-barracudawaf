@@ -253,7 +253,7 @@ func (b *BarracudaWAF) APICall(options *APIRequest) ([]byte, error) {
 
 	client := &http.Client{
 		Transport: b.Transport,
-		Timeout:   time.Second * 60,
+		Timeout:   time.Minute * 10,
 	}
 
 	url := fmt.Sprintf("%s/%s%s", b.Host, baseURI, options.URL)

@@ -25,10 +25,10 @@ provider "barracudawaf" {
 }
 
 ```
-**Create Self Signed Certificates**
+**Create Certificates**
 ```hcl
-resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
-    name                     = "DemoSelfSignedCert1"
+resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert" {
+    name                     = "DemoSelfSignedCert"
     allow_private_key_export = "Yes"
     city                     = "xxxxxx"
     common_name              = "xxxxxx"
@@ -38,6 +38,43 @@ resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
     organization_name        = "xxxxxx"
     organizational_unit      = "xxxxxx"
     state                    = "xxxxxx"
+}
+
+resource "barracudawaf_trusted_server_certificate" "demo_trusted_server_cert" {
+    name        = "DemoTrustedServerCert"
+    certificate = "<base_64_encoded_content>"
+
+    depends_on  = [ barracudawaf_self_signed_certificate.demo_self_signed_cert ]
+}
+
+resource "barracudawaf_trusted_ca_certificate" "demo_trusted_ca_cert" {
+    name        = "DemoTrustedCACert"
+    certificate = "<base_64_encoded_content>"
+  
+    depends_on  = [ barracudawaf_trusted_server_certificate.demo_trusted_server_cert ]
+}
+
+resource "barracudawaf_letsencrypt_certificate" "demo_letsencrypt_cert" {
+    name                       = "DemoLetsEncryptCert"
+    common_name                = "xxxxxx"
+    allow_private_key_export   = "Yes"
+    auto_renew_cert            = "Yes"
+    schedule_renewal_day       = "60"
+    multi_cert_trusted_service = barracudawaf_services.application_1.name
+    
+    depends_on = [ barracudawaf_trusted_ca_certificate.demo_trusted_ca_cert ]
+}
+
+resource "barracudawaf_signed_certificate" "demo_signed_cert" {
+    name                     = "DemoSignedCert"
+    assign_associated_key    = "Yes"
+    signed_certificate       = "<base_64_encoded_content>"
+    certificate_key          = "<base_64_encoded_content>"
+    certificate_type         = "pem"
+    allow_private_key_export = "Yes"
+    key_type                 = "rsa"
+  
+    depends_on  = [ barracudawaf_letsencrypt_certificate.demo_letsencrypt_cert ]
 }
 ```
 
@@ -58,7 +95,7 @@ resource "barracudawaf_services" "demo_app_1" {
       mode = "Active"
     }
     
-    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
+    depends_on = [ barracudawaf_signed_certificate.demo_signed_cert ]
 }
 
 resource "barracudawaf_services" "demo_app_2" {
@@ -71,7 +108,7 @@ resource "barracudawaf_services" "demo_app_2" {
     status          = "On"
     group           = "default"
     comments        = "Demo Service with Terraform"
-    certificate     = barracudawaf_self_signed_certificate.demo_self_signed_cert_1.name
+    certificate     = barracudawaf_self_signed_certificate.demo_self_signed_cert.name
 
     basic_security {
       mode = "Active"
@@ -91,11 +128,6 @@ resource "barracudawaf_servers" "demo_server_1" {
     port            = "80"
     comments        = "Creating the Demo Server"
     parent          = [ barracudawaf_services.demo_app_1.name ]
-    
-    out_of_band_health_checks {
-      enable_oob_health_checks = "Yes"
-      interval                 = "900"
-    }
 
     depends_on      = [ barracudawaf_services.demo_app_2 ]
 }
@@ -129,13 +161,6 @@ resource "barracudawaf_content_rule_servers" "demo_rule_group_server_1" {
     identifier  = "Hostname"
     hostname    = "barracuda.com"
     parent      = [ barracudawaf_services.demo_app_1.name, barracudawaf_content_rules.demo_rule_group_1.name ]
-    
-
-    application_layer_health_checks {
-        method               = "POST"
-        match_content_string = "index"
-        domain               = "example.com"
-    }
 
     depends_on = [ barracudawaf_content_rules.demo_rule_group_1 ]
 }
