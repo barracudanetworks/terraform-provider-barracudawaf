@@ -57,11 +57,6 @@ resource "barracudawaf_servers" "demo_server_1" {
     port            = "80"
     comments        = "Creating the Demo Server"
     parent          = [ barracudawaf_services.demo_app_1.name ]
-    
-    out_of_band_health_checks {
-      enable_oob_health_checks = "Yes"
-      interval                 = "900"
-    }
 
     depends_on      = [ barracudawaf_services.demo_app_1 ]
 }
@@ -95,11 +90,6 @@ resource "barracudawaf_servers" "demo_server_2" {
     comments        = "Creating the Demo Server"
     parent          = [ barracudawaf_services.demo_app_2.name ]
 
-    out_of_band_health_checks {
-      enable_oob_health_checks = "Yes"
-      interval                 = "900"
-    }
-
     depends_on = [ barracudawaf_services.demo_app_2 ]
 }
 
@@ -126,22 +116,7 @@ resource "barracudawaf_content_rule_servers" "demo_rule_group_server_1" {
     identifier  = "Hostname"
     hostname    = "barracuda.com"
     parent      = [ barracudawaf_services.demo_app_1.name, barracudawaf_content_rules.demo_rule_group_1.name ]
-    
-
-    application_layer_health_checks {
-        method               = "POST"
-        match_content_string = "index"
-        domain               = "example.com"
-    }
 
     depends_on = [ barracudawaf_content_rules.demo_rule_group_1 ]
 }
 
-resource "barracudawaf_url_acls" "demo_url_acl_1" {
-    name         = "DemoUrlAcl1"
-    redirect_url = "http://www.example.com/index.html"
-    action       = "Allow and Log"
-    parent       = [ barracudawaf_services.demo_app_1.name ]
-    
-    depends_on   = [ barracudawaf_content_rule_servers.demo_rule_group_server_1 ]
-}
