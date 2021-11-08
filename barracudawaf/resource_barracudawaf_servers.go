@@ -22,6 +22,10 @@ var (
 			"enable_tls_1_2",
 			"enable_tls_1_3",
 		},
+		"connection_pooling": {
+			"keepalive_timeout",
+			"enable_connection_pooling",
+		},
 	}
 )
 
@@ -85,6 +89,24 @@ func resourceCudaWAFServers() *schema.Resource {
 						"enable_tls_1_1": {Type: schema.TypeString, Optional: true, Description: "TLS 1.1"},
 						"enable_tls_1_2": {Type: schema.TypeString, Optional: true, Description: "TLS 1.2"},
 						"enable_tls_1_3": {Type: schema.TypeString, Optional: true, Description: "TLS 1.3"},
+					},
+				},
+			},
+			"connection_pooling": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"keepalive_timeout": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Keepalive Timeout",
+						},
+						"enable_connection_pooling": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Enable Connection Pooling",
+						},
 					},
 				},
 			},
