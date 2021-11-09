@@ -3,6 +3,7 @@ package barracudawaf
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -239,6 +240,14 @@ func resourceCudaWAFServices() *schema.Resource {
 					},
 				},
 			},
+			"secure_site_domain": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Description: "Secure Site Domain",
+			},
 		},
 
 		Description: "`barracudawaf_services` manages `Services` on the Barracuda Web Application Firewall.",
@@ -361,7 +370,7 @@ func resourceCudaWAFServicesDelete(d *schema.ResourceData, m interface{}) error 
 func hydrateBarracudaWAFServicesResource(d *schema.ResourceData, method string, endpoint string) *APIRequest {
 
 	//resourcePayload : payload for the resource
-	resourcePayload := map[string]string{
+	resourcePayload := map[string]interface{}{
 		"address-version":     d.Get("address_version").(string),
 		"mask":                d.Get("mask").(string),
 		"session-timeout":     d.Get("session_timeout").(string),
@@ -380,11 +389,14 @@ func hydrateBarracudaWAFServicesResource(d *schema.ResourceData, method string, 
 		"certificate":         d.Get("certificate").(string),
 		"service-hostname":    d.Get("service_hostname").(string),
 		"vsite":               d.Get("vsite").(string),
+		"secure-site-domain":  d.Get("secure_site_domain"),
 	}
+
+	log.Println("[DEBUG] Resource payload for the service REST Call : ", resourcePayload)
 
 	// parameters not supported for updates
 	if method == "put" {
-		updatePayloadExceptions := [...]string{"address-version", "group", "vsite"}
+		updatePayloadExceptions := [...]string{"address-version", "group", "vsite", "certificate", "secure-site-domain"}
 		for _, param := range updatePayloadExceptions {
 			delete(resourcePayload, param)
 		}
@@ -392,7 +404,7 @@ func hydrateBarracudaWAFServicesResource(d *schema.ResourceData, method string, 
 
 	// remove empty parameters from resource payload
 	for key, val := range resourcePayload {
-		if len(val) == 0 {
+		if reflect.ValueOf(val).Len() == 0 {
 			delete(resourcePayload, key)
 		}
 	}
