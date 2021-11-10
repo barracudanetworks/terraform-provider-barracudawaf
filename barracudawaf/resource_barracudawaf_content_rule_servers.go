@@ -28,7 +28,6 @@ func resourceCudaWAFContentRuleServers() *schema.Resource {
 			"address_version": {Type: schema.TypeString, Optional: true, Description: "Version"},
 			"port":            {Type: schema.TypeString, Optional: true, Description: "Port"},
 			"status":          {Type: schema.TypeString, Optional: true, Description: "Status"},
-			"resolved_ips":    {Type: schema.TypeString, Optional: true},
 			"parent": {
 				Type:     schema.TypeList,
 				Elem:     &schema.Schema{Type: schema.TypeString},
@@ -168,12 +167,11 @@ func hydrateBarracudaWAFContentRuleServersResource(d *schema.ResourceData, metho
 		"address-version": d.Get("address_version").(string),
 		"port":            d.Get("port").(string),
 		"status":          d.Get("status").(string),
-		"resolved-ips":    d.Get("resolved_ips").(string),
 	}
 
 	// parameters not supported for updates
 	if method == "put" {
-		updatePayloadExceptions := [...]string{"address-version", "resolved-ips"}
+		updatePayloadExceptions := [...]string{"address-version"}
 		for _, param := range updatePayloadExceptions {
 			delete(resourcePayload, param)
 		}

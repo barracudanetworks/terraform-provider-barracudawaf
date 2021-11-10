@@ -44,7 +44,6 @@ resource "barracudawaf_servers" "demo_server_1" {
 - **ip_address** (String) Server IP
 - **name** (String) Server Name
 - **port** (String) Server Port
-- **resolved_ips** (String)
 - **ssl_policy** (Block List) (see [below for nested schema](#nestedblock--ssl_policy))
 - **status** (String) Status
 

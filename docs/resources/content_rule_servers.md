@@ -40,7 +40,6 @@ resource "barracudawaf_content_rule_servers" "demo_rule_group_server_1" {
 - **ip_address** (String) IP Address
 - **name** (String) Web Server Name
 - **port** (String) Port
-- **resolved_ips** (String)
 - **status** (String) Status
 
 

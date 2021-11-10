@@ -45,7 +45,6 @@ func resourceCudaWAFServers() *schema.Resource {
 			"ip_address":      {Type: schema.TypeString, Optional: true, Description: "Server IP"},
 			"port":            {Type: schema.TypeString, Optional: true, Description: "Server Port"},
 			"status":          {Type: schema.TypeString, Optional: true, Description: "Status"},
-			"resolved_ips":    {Type: schema.TypeString, Optional: true},
 			"ssl_policy": {
 				Type:     schema.TypeList,
 				Optional: true,
@@ -246,12 +245,11 @@ func hydrateBarracudaWAFServersResource(d *schema.ResourceData, method string, e
 		"ip-address":      d.Get("ip_address").(string),
 		"port":            d.Get("port").(string),
 		"status":          d.Get("status").(string),
-		"resolved-ips":    d.Get("resolved_ips").(string),
 	}
 
 	// parameters not supported for updates
 	if method == "put" {
-		updatePayloadExceptions := [...]string{"address-version", "resolved-ips"}
+		updatePayloadExceptions := [...]string{"address-version"}
 		for _, param := range updatePayloadExceptions {
 			delete(resourcePayload, param)
 		}

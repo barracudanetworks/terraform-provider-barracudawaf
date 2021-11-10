@@ -20,16 +20,8 @@ func resourceCudaWAFTrustedServerCertificate() *schema.Resource {
 		Delete: resourceCudaWAFTrustedServerCertificateDelete,
 
 		Schema: map[string]*schema.Schema{
-			"common_name": {Type: schema.TypeString, Optional: true, Description: "Common Name"},
-			"expiry":      {Type: schema.TypeString, Optional: true},
-			"serial":      {Type: schema.TypeString, Optional: true},
 			"name":        {Type: schema.TypeString, Optional: true, Description: "Certificate Name"},
 			"certificate": {Type: schema.TypeString, Optional: true},
-			"download_type": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "A Certificate Signing Request (CSR) and/or Certificate can be downloaded.",
-			},
 		},
 
 		Description: "`barracudawaf_trusted_server_certificate` manages `Trusted Server Certificate` on the Barracuda Web Application Firewall.",
@@ -163,17 +155,13 @@ func hydrateBarracudaWAFTrustedServerCertificateResource(
 
 	//resourcePayload : payload for the resource
 	resourcePayload := map[string]string{
-		"common-name":   d.Get("common_name").(string),
-		"expiry":        d.Get("expiry").(string),
-		"serial":        d.Get("serial").(string),
-		"name":          d.Get("name").(string),
-		"certificate":   d.Get("certificate").(string),
-		"download-type": d.Get("download_type").(string),
+		"name":        d.Get("name").(string),
+		"certificate": d.Get("certificate").(string),
 	}
 
 	// parameters not supported for updates
 	if method == "put" {
-		updatePayloadExceptions := [...]string{"common-name", "expiry", "serial", "name", "certificate"}
+		updatePayloadExceptions := [...]string{"name", "certificate"}
 		for _, param := range updatePayloadExceptions {
 			delete(resourcePayload, param)
 		}

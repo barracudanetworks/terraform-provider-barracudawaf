@@ -27,11 +27,7 @@ resource "barracudawaf_trusted_server_certificate" "demo_trusted_server_cert_1" 
 ### Optional
 
 - **certificate** (String)
-- **common_name** (String) Common Name
-- **download_type** (String) A Certificate Signing Request (CSR) and/or Certificate can be downloaded.
-- **expiry** (String)
 - **id** (String) The ID of this resource.
 - **name** (String) Certificate Name
-- **serial** (String)
 
 

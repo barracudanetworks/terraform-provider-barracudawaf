@@ -48,16 +48,13 @@ resource "barracudawaf_services" "demo_app_1" {
 - **certificate** (String)
 - **cloud_ip_select** (String)
 - **comments** (String) Comments
-- **dps_enabled** (String) Enable Active DDoS Prevention
 - **enable_access_logs** (String) Enable Access Logs
 - **group** (String) Service Group
 - **id** (String) The ID of this resource.
 - **ip_address** (String) VIP
-- **linked_service_name** (String)
 - **mask** (String) Mask
 - **port** (String) Port
 - **service_hostname** (String)
-- **service_id** (String)
 - **session_timeout** (String) Session Timeout
 - **ssl_security** (Block List) (see [below for nested schema](#nestedblock--ssl_security))
 - **status** (String) Status
@@ -88,7 +85,6 @@ Optional:
 
 - **certificate** (String) Certificate
 - **ciphers** (String) Ciphers
-- **create_hsts_redirect_service** (String) Specify whether the redirect service should be created when HSTS is enabled.
 - **domain** (String) Domain
 - **ecdsa_certificate** (String) ECDSA Certificate
 - **enable_hsts** (String) Enable HSTS

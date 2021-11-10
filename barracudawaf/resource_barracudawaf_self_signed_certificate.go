@@ -20,21 +20,10 @@ func resourceCudaWAFSelfSignedCertificate() *schema.Resource {
 		Delete: resourceCudaWAFSelfSignedCertificateDelete,
 
 		Schema: map[string]*schema.Schema{
-			"download_type": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "A Certificate Signing Request (CSR) and/or Certificate can be downloaded.",
-			},
-			"encrypt_password": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Encryption Password is used to extract the private key from PKCS #12 token.",
-			},
 			"city":                {Type: schema.TypeString, Optional: true, Description: "Locality Name"},
 			"common_name":         {Type: schema.TypeString, Required: true, Description: "Common Name"},
 			"country_code":        {Type: schema.TypeString, Required: true, Description: "Country"},
 			"elliptic_curve_name": {Type: schema.TypeString, Optional: true, Description: "Elliptic Curve Name"},
-			"expiry":              {Type: schema.TypeString, Optional: true},
 			"key_size":            {Type: schema.TypeString, Optional: true, Description: "Key Size"},
 			"key_type":            {Type: schema.TypeString, Optional: true, Description: "Select Key Type:"},
 			"allow_private_key_export": {
@@ -46,7 +35,6 @@ func resourceCudaWAFSelfSignedCertificate() *schema.Resource {
 			"organization_name":   {Type: schema.TypeString, Optional: true, Description: "Organization Name"},
 			"organizational_unit": {Type: schema.TypeString, Optional: true, Description: "Organizational Unit Name"},
 			"san_certificate":     {Type: schema.TypeString, Optional: true, Description: "None"},
-			"serial":              {Type: schema.TypeString, Optional: true},
 			"state":               {Type: schema.TypeString, Optional: true, Description: "State or Province"},
 		},
 
@@ -177,13 +165,10 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 
 	//resourcePayload : payload for the resource
 	resourcePayload := map[string]string{
-		"download-type":            d.Get("download_type").(string),
-		"encrypt-password":         d.Get("encrypt_password").(string),
 		"city":                     d.Get("city").(string),
 		"common-name":              d.Get("common_name").(string),
 		"country-code":             d.Get("country_code").(string),
 		"elliptic-curve-name":      d.Get("elliptic_curve_name").(string),
-		"expiry":                   d.Get("expiry").(string),
 		"key-size":                 d.Get("key_size").(string),
 		"key-type":                 d.Get("key_type").(string),
 		"allow-private-key-export": d.Get("allow_private_key_export").(string),
@@ -191,7 +176,6 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 		"organization-name":        d.Get("organization_name").(string),
 		"organizational-unit":      d.Get("organizational_unit").(string),
 		"san-certificate":          d.Get("san_certificate").(string),
-		"serial":                   d.Get("serial").(string),
 		"state":                    d.Get("state").(string),
 	}
 
@@ -202,7 +186,6 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 			"common-name",
 			"country-code",
 			"elliptic-curve-name",
-			"expiry",
 			"key-size",
 			"key-type",
 			"allow-private-key-export",
@@ -210,7 +193,6 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 			"organization-name",
 			"organizational-unit",
 			"san-certificate",
-			"serial",
 			"state",
 		}
 		for _, param := range updatePayloadExceptions {
