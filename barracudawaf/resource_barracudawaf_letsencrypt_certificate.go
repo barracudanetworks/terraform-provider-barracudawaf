@@ -3,6 +3,7 @@ package barracudawaf
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -25,7 +26,15 @@ func resourceCudaWAFLetsEncryptCertificate() *schema.Resource {
 			"common_name":                {Type: schema.TypeString, Required: true, Description: "Common Name"},
 			"multi_cert_trusted_service": {Type: schema.TypeString, Required: true, Description: "Service Name for LetsEncrypt certificate"},
 			"schedule_renewal_day":       {Type: schema.TypeString, Optional: true, Description: "Renew Certificate days"},
-			"name":                       {Type: schema.TypeString, Required: true, Description: "Policy Name"},
+			"san": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Description: "Subject Alternative Names",
+			},
+			"name": {Type: schema.TypeString, Required: true, Description: "Policy Name"},
 		},
 
 		Description: "`barracudawaf_letsencrypt_certificate` manages `Letsencrypt Certificate` on the Barracuda Web Application Firewall.",
@@ -127,7 +136,8 @@ func resourceCudaWAFLetsEncryptCertificateDelete(d *schema.ResourceData, m inter
 func hydrateBarracudaWAFLetsEncryptCertificateResource(d *schema.ResourceData, method string, endpoint string) *APIRequest {
 
 	//resourcePayload : payload for the resource
-	resourcePayload := map[string]string{
+	resourcePayload := map[string]interface{}{
+		"san":                        d.Get("san"),
 		"name":                       d.Get("name").(string),
 		"common-name":                d.Get("common_name").(string),
 		"auto-renew-cert":            d.Get("auto_renew_cert").(string),
@@ -146,7 +156,7 @@ func hydrateBarracudaWAFLetsEncryptCertificateResource(d *schema.ResourceData, m
 
 	// remove empty parameters from resource payload
 	for key, val := range resourcePayload {
-		if len(val) == 0 {
+		if reflect.ValueOf(val).Len() == 0 {
 			delete(resourcePayload, key)
 		}
 	}
