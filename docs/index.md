@@ -114,8 +114,8 @@ resource "barracudawaf_servers" "demo_server_1" {
 * Security Policy
     -Services
         --Servers
-        --Content-Rules
-        --Content-Rule-Servers
+        --Content Rules
+        --Content Rule Servers
         --Lets-Encrypt Certificates
 ```
 
