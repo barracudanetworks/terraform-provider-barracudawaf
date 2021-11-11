@@ -42,7 +42,7 @@ resource "barracudawaf_letsencrypt_certificate" "demo_letsencrypt_cert" {
 - **auto_renew_cert** (String) Auto Renew Certificate
 - **id** (String) The ID of this resource.
 - **schedule_renewal_day** (String) Renew Certificate days
-- **san_cert** (String) Subject Alternative Names
+- **san_cert** (List) Subject Alternative Names
 
 ~> **Note** Creating a Terraform plan for updating the certificate for a service has a dependency. The certificate creation should be completed prior to the service update, without which the operation would result in an error. Only after this step can the old certificate be deleted.
 
