@@ -45,6 +45,7 @@ resource "barracudawaf_servers" "demo_server_1" {
 - **name** (String) Server Name
 - **port** (String) Server Port
 - **ssl_policy** (Block List) (see [below for nested schema](#nestedblock--ssl_policy))
+- **connection_pooling** (Block List) (see [below for nested schema](#nestedblock--connection_pooling))
 - **status** (String) Status
 
 
@@ -65,3 +66,10 @@ Optional:
 - **validate_certificate** (String) Validate Server Certificate
 
 
+<a id="nestedblock--connection_pooling"></a>
+### Nested Schema for `connection_pooling`
+
+Optional:
+
+- **enable_connection_pooling** (String) Enable Connection Pooling
+- **keepalive_timeout** (String) Keepalive Timeout

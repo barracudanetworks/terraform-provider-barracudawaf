@@ -40,6 +40,32 @@ resource "barracudawaf_content_rule_servers" "demo_rule_group_server_1" {
 - **ip_address** (String) IP Address
 - **name** (String) Web Server Name
 - **port** (String) Port
+- **ssl_policy** (Block List) (see [below for nested schema](#nestedblock--ssl_policy))
+- **connection_pooling** (Block List) (see [below for nested schema](#nestedblock--connection_pooling))
 - **status** (String) Status
 
 
+<a id="nestedblock--ssl_policy"></a>
+### Nested Schema for `ssl_policy`
+
+Optional:
+
+- **client_certificate** (String) Client Certificate
+- **enable_https** (String) Server uses SSL
+- **enable_sni** (String) Enable SNI
+- **enable_ssl_3** (String) SSL 3.0 (Insecure)
+- **enable_ssl_compatibility_mode** (String) Enable SSL Compatibility Mode
+- **enable_tls_1** (String) TLS 1.0 (Insecure)
+- **enable_tls_1_1** (String) TLS 1.1
+- **enable_tls_1_2** (String) TLS 1.2
+- **enable_tls_1_3** (String) TLS 1.3
+- **validate_certificate** (String) Validate Server Certificate
+
+
+<a id="nestedblock--connection_pooling"></a>
+### Nested Schema for `connection_pooling`
+
+Optional:
+
+- **enable_connection_pooling** (String) Enable Connection Pooling
+- **keepalive_timeout** (String) Keepalive Timeout

@@ -9,7 +9,24 @@ import (
 )
 
 var (
-	subResourceContentRuleServersParams = map[string][]string{}
+	subResourceContentRuleServersParams = map[string][]string{
+		"ssl_policy": {
+			"client_certificate",
+			"enable_ssl_compatibility_mode",
+			"validate_certificate",
+			"enable_https",
+			"enable_sni",
+			"enable_ssl_3",
+			"enable_tls_1",
+			"enable_tls_1_1",
+			"enable_tls_1_2",
+			"enable_tls_1_3",
+		},
+		"connection_pooling": {
+			"keepalive_timeout",
+			"enable_connection_pooling",
+		},
+	}
 )
 
 func resourceCudaWAFContentRuleServers() *schema.Resource {
@@ -28,6 +45,70 @@ func resourceCudaWAFContentRuleServers() *schema.Resource {
 			"address_version": {Type: schema.TypeString, Optional: true, Description: "Version"},
 			"port":            {Type: schema.TypeString, Optional: true, Description: "Port"},
 			"status":          {Type: schema.TypeString, Optional: true, Description: "Status"},
+			"ssl_policy": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"client_certificate": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Client Certificate",
+						},
+						"enable_ssl_compatibility_mode": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Enable SSL Compatibility Mode",
+						},
+						"validate_certificate": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Validate Server Certificate",
+						},
+						"enable_https": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Server uses SSL",
+						},
+						"enable_sni": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Enable SNI",
+						},
+						"enable_ssl_3": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "SSL 3.0 (Insecure)",
+						},
+						"enable_tls_1": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "TLS 1.0 (Insecure)",
+						},
+						"enable_tls_1_1": {Type: schema.TypeString, Optional: true, Description: "TLS 1.1"},
+						"enable_tls_1_2": {Type: schema.TypeString, Optional: true, Description: "TLS 1.2"},
+						"enable_tls_1_3": {Type: schema.TypeString, Optional: true, Description: "TLS 1.3"},
+					},
+				},
+			},
+			"connection_pooling": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"keepalive_timeout": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Keepalive Timeout",
+						},
+						"enable_connection_pooling": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Enable Connection Pooling",
+						},
+					},
+				},
+			},
 			"parent": {
 				Type:     schema.TypeList,
 				Elem:     &schema.Schema{Type: schema.TypeString},
