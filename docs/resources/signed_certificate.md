@@ -49,4 +49,6 @@ resource "barracudawaf_signed_certificate" "demo_signed_cert" {
 - **serial** (String)
 - **signed_certificate** (String)
 
+~> **Note** Creating a Terraform plan for updating the certificate for a service has a dependency. The certificate creation should be completed prior to the service update, without which the operation would result in an error. Only after this step can the old certificate be deleted.
+
 
