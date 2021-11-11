@@ -60,6 +60,7 @@ resource "barracudawaf_services" "demo_app_1" {
 - **status** (String) Status
 - **type** (String) Type
 - **vsite** (String) Vsite
+- **secure_site_domain** (List) Secure Site Domain
 
 
 <a id="nestedblock--basic_security"></a>
@@ -85,7 +86,7 @@ Optional:
 
 - **certificate** (String) Certificate
 - **ciphers** (String) Ciphers
-- **domain** (String) Domain
+- **domain** (List) Domain
 - **ecdsa_certificate** (String) ECDSA Certificate
 - **enable_hsts** (String) Enable HSTS
 - **enable_ocsp_stapling** (String) Enable OCSP Stapling
@@ -99,14 +100,14 @@ Optional:
 - **enable_tls_1_3** (String) TLS 1.3
 - **hsts_max_age** (String) HSTS Max-Age
 - **include_hsts_sub_domains** (String) Include HSTS Sub-Domains
-- **override_ciphers_ssl3** (String) Override ciphers for SSL 3.0
-- **override_ciphers_tls_1** (String) Override ciphers for TLS 1.0
-- **override_ciphers_tls_1_1** (String) Override ciphers for TLS 1.1
-- **override_ciphers_tls_1_2** (String) Override ciphers for TLS 1.2
-- **override_ciphers_tls_1_3** (String) Override ciphers for TLS 1.3
-- **selected_ciphers** (String) Selected Ciphers
-- **sni_certificate** (String) Domain Certificate
-- **sni_ecdsa_certificate** (String) Domain ECDSA Certificate
+- **override_ciphers_ssl3** (List) Override ciphers for SSL 3.0
+- **override_ciphers_tls_1** (List) Override ciphers for TLS 1.0
+- **override_ciphers_tls_1_1** (List) Override ciphers for TLS 1.1
+- **override_ciphers_tls_1_2** (List) Override ciphers for TLS 1.2
+- **override_ciphers_tls_1_3** (List) Override ciphers for TLS 1.3
+- **selected_ciphers** (List) Selected Ciphers
+- **sni_certificate** (List) Domain Certificate
+- **sni_ecdsa_certificate** (List) Domain ECDSA Certificate
 - **ssl_tls_presets** (String) SSL/TLS Quick Settings
 - **status** (String) Status
 

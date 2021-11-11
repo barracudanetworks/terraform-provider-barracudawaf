@@ -48,7 +48,7 @@ resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
 - **key_type** (String) Select Key Type:
 - **organization_name** (String) Organization Name
 - **organizational_unit** (String) Organizational Unit Name
-- **san_certificate** (String) None
+- **san_certificate** (List) None
 - **state** (String) State or Province
 
 

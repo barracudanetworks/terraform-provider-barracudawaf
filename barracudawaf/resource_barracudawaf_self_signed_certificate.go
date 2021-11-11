@@ -3,6 +3,7 @@ package barracudawaf
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -34,8 +35,15 @@ func resourceCudaWAFSelfSignedCertificate() *schema.Resource {
 			"name":                {Type: schema.TypeString, Required: true, Description: "None"},
 			"organization_name":   {Type: schema.TypeString, Optional: true, Description: "Organization Name"},
 			"organizational_unit": {Type: schema.TypeString, Optional: true, Description: "Organizational Unit Name"},
-			"san_certificate":     {Type: schema.TypeString, Optional: true, Description: "None"},
-			"state":               {Type: schema.TypeString, Optional: true, Description: "State or Province"},
+			"san_certificate": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Description: "SAN Certificate",
+			},
+			"state": {Type: schema.TypeString, Optional: true, Description: "State or Province"},
 		},
 
 		Description: "`barracudawaf_self_signed_certificate` manages `Self Signed Certificate` on the Barracuda Web Application Firewall.",
@@ -164,7 +172,7 @@ func resourceCudaWAFSelfSignedCertificateDelete(d *schema.ResourceData, m interf
 func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, method string, endpoint string) *APIRequest {
 
 	//resourcePayload : payload for the resource
-	resourcePayload := map[string]string{
+	resourcePayload := map[string]interface{}{
 		"city":                     d.Get("city").(string),
 		"common-name":              d.Get("common_name").(string),
 		"country-code":             d.Get("country_code").(string),
@@ -175,7 +183,7 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 		"name":                     d.Get("name").(string),
 		"organization-name":        d.Get("organization_name").(string),
 		"organizational-unit":      d.Get("organizational_unit").(string),
-		"san-certificate":          d.Get("san_certificate").(string),
+		"san-certificate":          d.Get("san_certificate"),
 		"state":                    d.Get("state").(string),
 	}
 
@@ -202,7 +210,7 @@ func hydrateBarracudaWAFSelfSignedCertificateResource(d *schema.ResourceData, me
 
 	// remove empty parameters from resource payload
 	for key, val := range resourcePayload {
-		if len(val) == 0 {
+		if reflect.ValueOf(val).Len() == 0 {
 			delete(resourcePayload, key)
 		}
 	}

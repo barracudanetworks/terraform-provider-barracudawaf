@@ -42,7 +42,7 @@ resource "barracudawaf_signed_certificate" "demo_signed_cert" {
 - **encrypt_password** (String) Encryption Password is used to extract the private key from PKCS #12 token.
 - **expiry** (String)
 - **id** (String) The ID of this resource.
-- **intermediary_certificates** (String)
+- **intermediary_certificates** (List) Intermediary Certificates
 - **key_type** (String) Select Key Type:
 - **name** (String) Certificate Name
 - **schedule_renewal_day** (String) None

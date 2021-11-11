@@ -3,6 +3,7 @@ package barracudawaf
 import (
 	"fmt"
 	"log"
+	"reflect"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -35,15 +36,22 @@ func resourceCudaWAFSignedCertificate() *schema.Resource {
 				Optional:    true,
 				Description: "Encryption Password is used to extract the private key from PKCS #12 token.",
 			},
-			"intermediary_certificates": {Type: schema.TypeString, Optional: true},
-			"name":                      {Type: schema.TypeString, Optional: true, Description: "Certificate Name"},
-			"auto_renew_cert":           {Type: schema.TypeString, Optional: true, Description: "None"},
-			"common_name":               {Type: schema.TypeString, Optional: true, Description: "Common Name"},
-			"expiry":                    {Type: schema.TypeString, Optional: true},
-			"key_type":                  {Type: schema.TypeString, Optional: true, Description: "Select Key Type:"},
-			"allow_private_key_export":  {Type: schema.TypeString, Optional: true},
-			"schedule_renewal_day":      {Type: schema.TypeString, Optional: true, Description: "None"},
-			"serial":                    {Type: schema.TypeString, Optional: true},
+			"intermediary_certificates": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+				Description: "Intermediary Certificates",
+			},
+			"name":                     {Type: schema.TypeString, Optional: true, Description: "Certificate Name"},
+			"auto_renew_cert":          {Type: schema.TypeString, Optional: true, Description: "None"},
+			"common_name":              {Type: schema.TypeString, Optional: true, Description: "Common Name"},
+			"expiry":                   {Type: schema.TypeString, Optional: true},
+			"key_type":                 {Type: schema.TypeString, Optional: true, Description: "Select Key Type:"},
+			"allow_private_key_export": {Type: schema.TypeString, Optional: true},
+			"schedule_renewal_day":     {Type: schema.TypeString, Optional: true, Description: "None"},
+			"serial":                   {Type: schema.TypeString, Optional: true},
 		},
 
 		Description: "`barracudawaf_signed_certificate` manages `Signed Certificate` on the Barracuda Web Application Firewall.",
@@ -166,7 +174,7 @@ func resourceCudaWAFSignedCertificateDelete(d *schema.ResourceData, m interface{
 func hydrateBarracudaWAFSignedCertificateResource(d *schema.ResourceData, method string, endpoint string) *APIRequest {
 
 	//resourcePayload : payload for the resource
-	resourcePayload := map[string]string{
+	resourcePayload := map[string]interface{}{
 		"assign-associated-key":     d.Get("assign_associated_key").(string),
 		"signed-certificate":        d.Get("signed_certificate").(string),
 		"certificate-key":           d.Get("certificate_key").(string),
@@ -174,7 +182,7 @@ func hydrateBarracudaWAFSignedCertificateResource(d *schema.ResourceData, method
 		"certificate-type":          d.Get("certificate_type").(string),
 		"download-type":             d.Get("download_type").(string),
 		"encrypt-password":          d.Get("encrypt_password").(string),
-		"intermediary-certificates": d.Get("intermediary_certificates").(string),
+		"intermediary-certificates": d.Get("intermediary_certificates"),
 		"name":                      d.Get("name").(string),
 		"auto-renew-cert":           d.Get("auto_renew_cert").(string),
 		"common-name":               d.Get("common_name").(string),
@@ -208,7 +216,7 @@ func hydrateBarracudaWAFSignedCertificateResource(d *schema.ResourceData, method
 
 	// remove empty parameters from resource payload
 	for key, val := range resourcePayload {
-		if len(val) == 0 {
+		if reflect.ValueOf(val).Len() == 0 {
 			delete(resourcePayload, key)
 		}
 	}

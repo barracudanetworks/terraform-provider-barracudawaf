@@ -149,33 +149,51 @@ func resourceCudaWAFServices() *schema.Resource {
 							Description: "HSTS Max-Age",
 						},
 						"selected_ciphers": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Selected Ciphers",
 						},
 						"override_ciphers_ssl3": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Override ciphers for SSL 3.0",
 						},
 						"override_ciphers_tls_1_1": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Override ciphers for TLS 1.1",
 						},
 						"override_ciphers_tls_1_2": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Override ciphers for TLS 1.2",
 						},
 						"override_ciphers_tls_1_3": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Override ciphers for TLS 1.3",
 						},
 						"override_ciphers_tls_1": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Override ciphers for TLS 1.0",
 						},
 						"enable_pfs": {
@@ -207,14 +225,27 @@ func resourceCudaWAFServices() *schema.Resource {
 							Description: "Enable OCSP Stapling",
 						},
 						"sni_certificate": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Domain Certificate",
 						},
-						"domain": {Type: schema.TypeString, Optional: true, Description: "Domain"},
+						"domain": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+							Description: "Domain",
+						},
 						"sni_ecdsa_certificate": {
-							Type:        schema.TypeString,
-							Optional:    true,
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
 							Description: "Domain ECDSA Certificate",
 						},
 						"enable_sni": {Type: schema.TypeString, Optional: true, Description: "Enable SNI"},
@@ -413,14 +444,18 @@ func (b *BarracudaWAF) hydrateBarracudaWAFServicesSubResource(d *schema.Resource
 		log.Printf("[INFO] Updating Barracuda WAF sub resource (%s) (%s)", name, subResource)
 
 		for i := 0; i < subResourceParamsLength; i++ {
-			subResourcePayload := map[string]string{}
+			subResourcePayload := make(map[string]interface{})
 			suffix := fmt.Sprintf(".%d", i)
 
 			for _, param := range subResourceParams {
 				paramSuffix := fmt.Sprintf(".%s", param)
-				paramVaule := d.Get(subResource + suffix + paramSuffix).(string)
+				paramVaule := d.Get(subResource + suffix + paramSuffix)
 
-				if len(paramVaule) > 0 {
+				if reflect.ValueOf(paramVaule).Kind() == reflect.String {
+					paramVaule = paramVaule.(string)
+				}
+
+				if reflect.ValueOf(paramVaule).Len() > 0 {
 					param = strings.Replace(param, "_", "-", -1)
 					subResourcePayload[param] = paramVaule
 				}
