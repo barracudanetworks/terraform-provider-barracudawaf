@@ -26,7 +26,7 @@ func resourceCudaWAFLetsEncryptCertificate() *schema.Resource {
 			"common_name":                {Type: schema.TypeString, Required: true, Description: "Common Name"},
 			"multi_cert_trusted_service": {Type: schema.TypeString, Required: true, Description: "Service Name for LetsEncrypt certificate"},
 			"schedule_renewal_day":       {Type: schema.TypeString, Optional: true, Description: "Renew Certificate days"},
-			"san": {
+			"san_cert": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Schema{
@@ -137,7 +137,7 @@ func hydrateBarracudaWAFLetsEncryptCertificateResource(d *schema.ResourceData, m
 
 	//resourcePayload : payload for the resource
 	resourcePayload := map[string]interface{}{
-		"san":                        d.Get("san"),
+		"san-cert":                   d.Get("san_cert"),
 		"name":                       d.Get("name").(string),
 		"common-name":                d.Get("common_name").(string),
 		"auto-renew-cert":            d.Get("auto_renew_cert").(string),
