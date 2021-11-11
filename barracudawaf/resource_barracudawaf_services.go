@@ -50,6 +50,11 @@ var (
 			"status",
 			"ssl_tls_presets",
 		},
+		"instant_ssl": {
+			"status",
+			"sharepoint_rewrite_support",
+			"secure_site_domain",
+		},
 	}
 )
 
@@ -270,6 +275,32 @@ func resourceCudaWAFServices() *schema.Resource {
 					Type: schema.TypeString,
 				},
 				Description: "Secure Site Domain",
+			},
+			"instant_ssl": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"status": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "Status",
+						},
+						"sharepoint_rewrite_support": {
+							Type:        schema.TypeString,
+							Optional:    true,
+							Description: "SharePoint Rewrite Support",
+						},
+						"secure_site_domain": {
+							Type:     schema.TypeList,
+							Optional: true,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+							Description: "Secure Site Domain",
+						},
+					},
+				},
 			},
 		},
 

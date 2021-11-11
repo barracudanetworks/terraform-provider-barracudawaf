@@ -61,6 +61,7 @@ resource "barracudawaf_services" "demo_app_1" {
 - **type** (String) Type
 - **vsite** (String) Vsite
 - **secure_site_domain** (List) Secure Site Domain
+- **instant_ssl** (Block List) (see [below for nested schema](#nestedblock--instant_ssl))
 
 
 <a id="nestedblock--basic_security"></a>
@@ -111,4 +112,12 @@ Optional:
 - **ssl_tls_presets** (String) SSL/TLS Quick Settings
 - **status** (String) Status
 
+<a id="nestedblock--instant_ssl"></a>
+### Nested Schema for `instant_ssl`
+
+Optional:
+
+- **secure_site_domain** (List) Secure Site Domain
+- **sharepoint_rewrite_support** (String) SharePoint Rewrite Support
+- **status** (String) Status
 

@@ -35,3 +35,134 @@ provider "barracudawaf" {
 - **password** (String) Password of the WAF to be configured
 - **port** (String) Admin port on the WAF to be configured
 - **username** (String) Username of the WAF to be configured
+
+
+## Usage Help
+~> **Note** Each resource should have `depends_on` key with the value as name of the previous resource defined. Find the examples below:
+
+
+### Examples
+
+```terraform
+resource "barracudawaf_trusted_server_certificate" "demo_trusted_server_cert_1" {
+  name        = "DemoTrustedServerCert1"
+  certificate = "<base_64_encoded_content>"
+}
+
+resource "barracudawaf_trusted_ca_certificate" "demo_trusted_ca_cert_1" {
+  name        = "DemoTrustedCACert1"
+  certificate = "<base_64_encoded_content>"
+  depends_on  = [ barracudawaf_trusted_server_certificate.demo_trusted_server_cert_1 ]
+}
+
+resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
+    name                     = "DemoSelfSignedCert1"
+    allow_private_key_export = "Yes"
+    city                     = "Bangalore"
+    common_name              = "waf.test.local"
+    country_code             = "IN"
+    key_size                 = "1024"
+    key_type                 = "rsa"
+    organization_name        = "Barracuda Networks"
+    organizational_unit      = "Engineering"
+    state                    = "Karnataka"
+    depends_on               = [barracudawaf_trusted_ca_certificate.demo_trusted_ca_cert_1]
+}
+
+resource "barracudawaf_services" "demo_app_1" {
+    name            = "DemoApp1"
+    ip_address      = "x.x.x.x"
+    port            = "80"
+    type            = "HTTP"
+    vsite           = "default"
+    address_version = "IPv4"
+    status          = "On"
+    group           = "default"
+    comments        = "Demo Service with Terraform"
+
+    basic_security {
+      mode = "Active"
+    }
+
+    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
+}
+
+resource "barracudawaf_servers" "demo_server_1" {
+    name            = "DemoServer1"
+    identifier      = "IP Address"
+    address_version = "IPv4"
+    status          = "In Service"
+    ip_address      = "x.x.x.x"
+    port            = "80"
+    comments        = "Creating the Demo Server"
+    parent          = [ barracudawaf_services.demo_app_1.name ]
+
+    depends_on      = [ barracudawaf_services.demo_app_1 ]
+}
+```
+~> **Note** Below is the `Dependency` for the Barracuda WAF resources.
+
+```terraform
+* Self Signed Certificate
+
+* Signed Certificate
+
+* Trusted CA Certificate
+
+* Trusted Server Certificate
+
+* Security Policy
+    -Services
+        --Servers
+        --Content-Rules
+        --Content-Rule-Servers
+        --Lets-Encrypt Certificates
+```
+
+
+~> **Note** For renaming an already existing resource in terraform template, delete the resource and recreate it, instead of changing the `name` attribute in resource definition.
+
+### Existing Resource
+```terraform
+resource "barracudawaf_services" "demo_app_1" {
+    name            = "DemoApp1"
+    ip_address      = "x.x.x.x"
+    port            = "80"
+    type            = "HTTP"
+    vsite           = "default"
+    address_version = "IPv4"
+    status          = "On"
+    group           = "default"
+    comments        = "Demo Service with Terraform"
+
+    basic_security {
+      mode = "Active"
+    }
+
+    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
+}
+```
+
+### Renamed Resource
+```terraform
+resource "barracudawaf_services" "demo_app_2" {
+    name            = "DemoApp2"
+    ip_address      = "x.x.x.x"
+    port            = "80"
+    type            = "HTTP"
+    vsite           = "default"
+    address_version = "IPv4"
+    status          = "On"
+    group           = "default"
+    comments        = "Demo Service with Terraform"
+
+    basic_security {
+      mode = "Active"
+    }
+
+    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
+}
+```
+
+
+~> **Note** If any resource is removed/deleted from the Barracuda WAF system, Terraform plugin will error out with message `"Barracuda WAF resource (<resource_name>) not found in the system`. In this case please manually remove the resource from state file (`terraform.tfstate`).
