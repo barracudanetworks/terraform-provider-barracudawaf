@@ -36,133 +36,165 @@ provider "barracudawaf" {
 - **port** (String) Admin port on the WAF to be configured
 - **username** (String) Username of the WAF to be configured
 
+---
+</br>
 
-## Usage Help
-~> **Note** Each resource should have `depends_on` key with the value as name of the previous resource defined. Find the examples below:
+## SUPPORTED CONFIG RESOURCES
 
-
-### Examples
-
-```terraform
-resource "barracudawaf_trusted_server_certificate" "demo_trusted_server_cert_1" {
-  name        = "DemoTrustedServerCert1"
-  certificate = "<base_64_encoded_content>"
-}
-
-resource "barracudawaf_trusted_ca_certificate" "demo_trusted_ca_cert_1" {
-  name        = "DemoTrustedCACert1"
-  certificate = "<base_64_encoded_content>"
-  depends_on  = [ barracudawaf_trusted_server_certificate.demo_trusted_server_cert_1 ]
-}
-
-resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
-    name                     = "DemoSelfSignedCert1"
-    allow_private_key_export = "Yes"
-    city                     = "Bangalore"
-    common_name              = "waf.test.local"
-    country_code             = "IN"
-    key_size                 = "1024"
-    key_type                 = "rsa"
-    organization_name        = "Barracuda Networks"
-    organizational_unit      = "Engineering"
-    state                    = "Karnataka"
-    depends_on               = [barracudawaf_trusted_ca_certificate.demo_trusted_ca_cert_1]
-}
-
-resource "barracudawaf_services" "demo_app_1" {
-    name            = "DemoApp1"
-    ip_address      = "x.x.x.x"
-    port            = "80"
-    type            = "HTTP"
-    vsite           = "default"
-    address_version = "IPv4"
-    status          = "On"
-    group           = "default"
-    comments        = "Demo Service with Terraform"
-
-    basic_security {
-      mode = "Active"
-    }
-
-    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
-}
-
-resource "barracudawaf_servers" "demo_server_1" {
-    name            = "DemoServer1"
-    identifier      = "IP Address"
-    address_version = "IPv4"
-    status          = "In Service"
-    ip_address      = "x.x.x.x"
-    port            = "80"
-    comments        = "Creating the Demo Server"
-    parent          = [ barracudawaf_services.demo_app_1.name ]
-
-    depends_on      = [ barracudawaf_services.demo_app_1 ]
-}
-```
-~> **Note** Below is the `Dependency` for the Barracuda WAF resources.
+The Terraform provider can be used to configure the following resources on the Barracuda WAF:
 
 ```terraform
-* Self Signed Certificate
+1)  Signed certificates
 
-* Signed Certificate
+2)  Self signed certificates
 
-* Trusted CA Certificate
+3)  Trusted server certificates
 
-* Trusted Server Certificate
+4)  Trusted CA certificates
 
-* Security Policy
-    -Services
-        --Servers
-        --Content Rules
-        --Content Rule Servers
-        --Lets-Encrypt Certificates
+5)  Let’s encrypt certificates
+
+6)  Security Policies
+
+7)  Services
+      Basic security , SSL policy , Instant SSL
+
+8)  Servers
+      SSL policy, Connection pooling
+
+9)  Content rules
+
+10) Content rule servers
+      SSL policy, Connection pooling
 ```
 
+---
+</br>
 
-~> **Note** For renaming an already existing resource in terraform template, delete the resource and recreate it, instead of changing the `name` attribute in resource definition.
+## CONFIGURATION HIERARCHY
+The Barracuda WAF configuration structure is hierarchical due to which the Terraform `depends_on` meta-argument should be used to ensure the configuration operations are sequential on the Barracuda WAF while using the Terraform provider.
+ 
+Following is the sequence that should be followed with the supported config resources :
 
-### Existing Resource
 ```terraform
-resource "barracudawaf_services" "demo_app_1" {
-    name            = "DemoApp1"
-    ip_address      = "x.x.x.x"
-    port            = "80"
-    type            = "HTTP"
-    vsite           = "default"
-    address_version = "IPv4"
-    status          = "On"
-    group           = "default"
-    comments        = "Demo Service with Terraform"
+1.  Self signed certificates
 
-    basic_security {
-      mode = "Active"
-    }
+2.  Signed certificates
 
-    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
-}
+3.  Trusted Server certificates
+
+4.  Trusted CA certificates
+
+5.  Security policy
+
+6.  Services
+      6.1 Servers
+
+      6.2 Content Rules
+        6.2.1 Content Rule Servers
+
+      6.3 Lets Encrypt Certificate
 ```
 
-### Renamed Resource
+**Example1** ( Resource sequence and depends_on usage)  :
+
 ```terraform
-resource "barracudawaf_services" "demo_app_2" {
-    name            = "DemoApp2"
-    ip_address      = "x.x.x.x"
-    port            = "80"
-    type            = "HTTP"
-    vsite           = "default"
-    address_version = "IPv4"
-    status          = "On"
-    group           = "default"
-    comments        = "Demo Service with Terraform"
-
-    basic_security {
-      mode = "Active"
-    }
-
-    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ]
+resource "barracudawaf_trusted_server_certificate" "demo_trusted_server_cert_1" { 
+  name        = "DemoTrustedServerCert1" 
+  certificate = "<base_64_encoded_content>" 
+} 
+ 
+resource "barracudawaf_trusted_ca_certificate" "demo_trusted_ca_cert_1" { 
+  name        = "DemoTrustedCACert1" 
+  certificate = "<base_64_encoded_content>" 
+  depends_on  = [ barracudawaf_trusted_server_certificate.demo_trusted_server_cert_1 ] 
+} 
+ 
+resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" { 
+    name                     = "DemoSelfSignedCert1" 
+    allow_private_key_export = "Yes" 
+    city                     = "Bangalore" 
+    common_name              = "waf.test.local" 
+    country_code             = "IN" 
+    key_size                 = "1024" 
+    key_type                 = "rsa" 
+    organization_name        = "Barracuda Networks" 
+    organizational_unit      = "Engineering" 
+    state                    = "Karnataka" 
+    depends_on               = [barracudawaf_trusted_ca_certificate.demo_trusted_ca_cert_1] 
+} 
+ 
+resource "barracudawaf_services" "demo_app_1" { 
+    name            = "DemoApp1" 
+    ip_address      = "x.x.x.x" 
+    port            = "80" 
+    type            = "HTTP" 
+    vsite           = "default" 
+    address_version = "IPv4" 
+    status          = "On" 
+    group           = "default" 
+    comments        = "Demo Service with Terraform" 
+ 
+    basic_security { 
+      mode = "Active" 
+    } 
+ 
+    depends_on = [ barracudawaf_self_signed_certificate.demo_self_signed_cert_1 ] 
+} 
+ 
+resource "barracudawaf_servers" "demo_server_1" { 
+    name            = "DemoServer1" 
+    identifier      = "IP Address" 
+    address_version = "IPv4" 
+    status          = "In Service" 
+    ip_address      = "x.x.x.x" 
+    port            = "80" 
+    comments        = "Creating the Demo Server" 
+    parent          = [ barracudawaf_services.demo_app_1.name ] 
+ 
+    depends_on      = [ barracudawaf_services.demo_app_1 ] 
 }
 ```
 
+**Note** that if multiple instances of the same configuration resource type has to be configured then the depends_on meta-argument should be used to ensure they are configured in a sequential way on the Barracuda WAF.
 
-~> **Note** If any resource is removed/deleted from the Barracuda WAF system, Terraform plugin will error out with message `"Barracuda WAF resource (<resource_name>) not found in the system`. In this case please manually remove the resource from state file (`terraform.tfstate`).
+**Example 2** (multiple resources of the same type and depends_on usage):
+ 
+Following code snippet shows configuring multiple servers under an existing service and using the depends_on meta-argument to make config operation sequential .
+
+```terraform
+resource "barracudawaf_servers" "demo_server_1" { 
+    name            = "DemoServer1" 
+    identifier      = "IP Address" 
+    address_version = "IPv4" 
+    status          = "In Service" 
+    ip_address      = "x.x.x.x" 
+    port            = "80" 
+    comments        = "Creating the Demo Server 1" 
+    parent          = [ barracudawaf_services.demo_app_1.name ] 
+ 
+    depends_on      = [ barracudawaf_services.demo_app_1 ] 
+} 
+ 
+resource "barracudawaf_servers" "demo_server_2" { 
+    name            = "DemoServer2" 
+    identifier      = "IP Address" 
+    address_version = "IPv4" 
+    status          = "In Service" 
+    ip_address      = "x.x.x.x" 
+    port            = "81" 
+    comments        = "Creating the Demo Server 2" 
+    parent          = [ barracudawaf_services.demo_app_1.name ] 
+ 
+    depends_on      = [ barracudawaf_servers.demo_server_1 ] 
+}
+```
+
+---
+</br>
+
+## IMPORTANT NOTES:
+
+1) To rename an existing resource that was configured using the terraform template , the resource should be deleted and recreated instead of changing thenameattribute in resource definition.
+ 
+2) If any resource that was configured using Terraform provider is manually ( not using Terraform) removed/deleted from the Barracuda WAF system then the Terraform plugin will error out with a message"Barracuda WAF resource (<resource_name>) not found in the system. In this case please manually remove the resource from state file (terraform.tfstate).

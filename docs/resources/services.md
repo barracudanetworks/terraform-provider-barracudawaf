@@ -38,28 +38,26 @@ resource "barracudawaf_services" "demo_app_1" {
 ### Required
 
 - **name** (String) Web Application Name
+- **ip_address** (String) VIP
+- **port** (String) Port
+- **type** (String) Type
+- **vsite** (String) Vsite
+- **address_version** (String) Version
+- **group** (String) Service Group
 
 ### Optional
 
-
-- **address_version** (String) Version
 - **app_id** (String) Service App Id
 - **basic_security** (Block List) (see [below for nested schema](#nestedblock--basic_security))
 - **certificate** (String)
 - **cloud_ip_select** (String)
 - **comments** (String) Comments
 - **enable_access_logs** (String) Enable Access Logs
-- **group** (String) Service Group
 - **id** (String) The ID of this resource.
-- **ip_address** (String) VIP
 - **mask** (String) Mask
-- **port** (String) Port
-- **service_hostname** (String)
 - **session_timeout** (String) Session Timeout
 - **ssl_security** (Block List) (see [below for nested schema](#nestedblock--ssl_security))
 - **status** (String) Status
-- **type** (String) Type
-- **vsite** (String) Vsite
 - **secure_site_domain** (List) Secure Site Domain
 - **instant_ssl** (Block List) (see [below for nested schema](#nestedblock--instant_ssl))
 

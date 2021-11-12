@@ -28,18 +28,18 @@ resource "barracudawaf_content_rule_servers" "demo_rule_group_server_1" {
 
 ### Required
 
+- **name** (String) Web Server Name
+- **ip_address** (String) IP Address
+- **identifier** (String) Identifier:
+- **port** (String) Port
+- **address_version** (String) Version
 - **parent** (List of String)
 
 ### Optional
 
-- **address_version** (String) Version
 - **comments** (String) Comments
 - **hostname** (String) Hostname
 - **id** (String) The ID of this resource.
-- **identifier** (String) Identifier:
-- **ip_address** (String) IP Address
-- **name** (String) Web Server Name
-- **port** (String) Port
 - **ssl_policy** (Block List) (see [below for nested schema](#nestedblock--ssl_policy))
 - **connection_pooling** (Block List) (see [below for nested schema](#nestedblock--connection_pooling))
 - **status** (String) Status

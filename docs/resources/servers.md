@@ -32,18 +32,18 @@ resource "barracudawaf_servers" "demo_server_1" {
 
 ### Required
 
+- **name** (String) Server Name
+- **identifier** (String) Identifier
+- **address_version** (String) Version
+- **ip_address** (String) Server IP
+- **port** (String) Server Port
 - **parent** (List of String)
 
 ### Optional
 
-- **address_version** (String) Version
 - **comments** (String) Comments
 - **hostname** (String) Hostname
 - **id** (String) The ID of this resource.
-- **identifier** (String) Identifier
-- **ip_address** (String) Server IP
-- **name** (String) Server Name
-- **port** (String) Server Port
 - **ssl_policy** (Block List) (see [below for nested schema](#nestedblock--ssl_policy))
 - **connection_pooling** (Block List) (see [below for nested schema](#nestedblock--connection_pooling))
 - **status** (String) Status

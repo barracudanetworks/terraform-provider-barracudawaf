@@ -80,7 +80,6 @@ func resourceCudaWAFServices() *schema.Resource {
 			"status":             {Type: schema.TypeString, Optional: true, Description: "Status"},
 			"type":               {Type: schema.TypeString, Optional: true, Description: "Type"},
 			"certificate":        {Type: schema.TypeString, Optional: true},
-			"service_hostname":   {Type: schema.TypeString, Optional: true},
 			"vsite":              {Type: schema.TypeString, Optional: true, Description: "Vsite"},
 			"basic_security": {
 				Type:     schema.TypeList,
@@ -439,7 +438,6 @@ func hydrateBarracudaWAFServicesResource(d *schema.ResourceData, method string, 
 		"status":             d.Get("status").(string),
 		"type":               d.Get("type").(string),
 		"certificate":        d.Get("certificate").(string),
-		"service-hostname":   d.Get("service_hostname").(string),
 		"vsite":              d.Get("vsite").(string),
 		"secure-site-domain": d.Get("secure_site_domain"),
 	}

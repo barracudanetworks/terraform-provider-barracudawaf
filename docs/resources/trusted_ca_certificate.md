@@ -27,10 +27,10 @@ resource "barracudawaf_trusted_ca_certificate" "demo_trusted_ca_cert_1" {
 ### Required
 
 - **name** (String) Certificate Name
+- **certificate** (String)
 
 ### Optional
 
-- **certificate** (String)
 - **id** (String) The ID of this resource.
 
 ~> **Note** Creating a Terraform plan for updating the certificate for a service has a dependency. The certificate creation should be completed prior to the service update, without which the operation would result in an error. Only after this step can the old certificate be deleted.

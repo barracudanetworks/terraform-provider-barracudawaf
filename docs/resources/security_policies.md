@@ -27,10 +27,10 @@ resource "barracudawaf_security_policies" "demo_security_policy_1" {
 ### Required
 
 - **name** (String) Policy Name
+- **based_on** (String)
 
 ### Optional
 
-- **based_on** (String)
 - **id** (String) The ID of this resource.
 
 

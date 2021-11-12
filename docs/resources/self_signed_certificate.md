@@ -37,19 +37,19 @@ resource "barracudawaf_self_signed_certificate" "demo_self_signed_cert_1" {
 - **common_name** (String) Common Name
 - **country_code** (String) Country
 - **name** (String) None
-
-### Optional
-
 - **allow_private_key_export** (String) If set to <b>Yes</b>, the Private Key gets downloaded along with the certificate.
 - **city** (String) Locality Name
-- **elliptic_curve_name** (String) Elliptic Curve Name
-- **id** (String) The ID of this resource.
 - **key_size** (String) Key Size
 - **key_type** (String) Select Key Type:
 - **organization_name** (String) Organization Name
 - **organizational_unit** (String) Organizational Unit Name
-- **san_certificate** (List) None
 - **state** (String) State or Province
+
+### Optional
+
+- **elliptic_curve_name** (String) Elliptic Curve Name
+- **id** (String) The ID of this resource.
+- **san_certificate** (List) None
 
 ~> **Note** Creating a Terraform plan for updating the certificate for a service has a dependency. The certificate creation should be completed prior to the service update, without which the operation would result in an error. Only after this step can the old certificate be deleted.
 
