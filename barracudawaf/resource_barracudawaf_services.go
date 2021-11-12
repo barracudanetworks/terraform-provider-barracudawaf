@@ -446,7 +446,7 @@ func hydrateBarracudaWAFServicesResource(d *schema.ResourceData, method string, 
 
 	// parameters not supported for updates
 	if method == "put" {
-		updatePayloadExceptions := [...]string{"address-version", "group", "vsite", "certificate", "secure-site-domain"}
+		updatePayloadExceptions := [...]string{"address-version", "type", "group", "vsite", "certificate", "secure-site-domain"}
 		for _, param := range updatePayloadExceptions {
 			delete(resourcePayload, param)
 		}

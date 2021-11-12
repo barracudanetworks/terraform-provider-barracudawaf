@@ -39,7 +39,7 @@ provider "barracudawaf" {
 ---
 </br>
 
-## SUPPORTED CONFIG RESOURCES
+## Supported Config Resources
 
 The Terraform provider can be used to configure the following resources on the Barracuda WAF:
 
@@ -71,7 +71,7 @@ The Terraform provider can be used to configure the following resources on the B
 ---
 </br>
 
-## CONFIGURATION HIERARCHY
+## Configuration Hierarchy
 The Barracuda WAF configuration structure is hierarchical due to which the Terraform `depends_on` meta-argument should be used to ensure the configuration operations are sequential on the Barracuda WAF while using the Terraform provider.
  
 Following is the sequence that should be followed with the supported config resources :
@@ -193,7 +193,7 @@ resource "barracudawaf_servers" "demo_server_2" {
 ---
 </br>
 
-## IMPORTANT NOTES:
+## Important Notes:
 
 1) To rename an existing resource that was configured using the terraform template , the resource should be deleted and recreated instead of changing thenameattribute in resource definition.
  
