@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-//Config : container for Barracuda WAF session
+// Config : container for Barracuda WAF session
 type Config struct {
 	IPAddress string
 	Username  string
@@ -13,7 +13,7 @@ type Config struct {
 	AdminPort string
 }
 
-//Client : Barracuda WAF Client for REST API calls for resource crud
+// Client : Barracuda WAF Client for REST API calls for resource crud
 func (c *Config) Client() (*BarracudaWAF, error) {
 
 	if c.IPAddress != "" && c.Username != "" && c.Password != "" && c.AdminPort != "" {

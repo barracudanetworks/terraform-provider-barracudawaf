@@ -36,7 +36,7 @@ type APIRequest struct {
 	ContentType string
 }
 
-//WAFResouceData : Container for barracuda WAF resource's data
+// WAFResouceData : Container for barracuda WAF resource's data
 type WAFResouceData struct {
 	Token  string                            `json:"token,omitempty"`
 	Object string                            `json:"object,omitempty"`

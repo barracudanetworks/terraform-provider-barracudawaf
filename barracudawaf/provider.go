@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-//Provider : Schema definition for barracudawaf provider
+// Provider : Schema definition for barracudawaf provider
 func Provider() *schema.Provider {
 
 	// The actual provider
