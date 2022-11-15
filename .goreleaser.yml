@@ -50,5 +50,9 @@ signs:
 release:
   # If you want to manually examine the release before its live, uncomment this line:
   # draft: true
+  disable: false
+  github:
+      owner: barracudanetworks-waf 
+      name:  terraform-provider-barracudawaf
 changelog:
   skip: true
