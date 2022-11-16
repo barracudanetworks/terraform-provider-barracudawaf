@@ -218,7 +218,7 @@ $ $GOPATH/src/github.com/barracudanetworks/terraform-provider-barracudawaf
 ...
 
 ```
-
+-
 &nbsp;
 # Using the binary instead of building it from source #
 
