@@ -193,7 +193,7 @@ resource "barracudawaf_servers" "demo_server_2" {
 ---
 </br>
 
-## Important Notes:
+## Important Notes
 
 1) To rename an existing resource that was configured using the terraform template , the resource should be deleted and recreated instead of changing thenameattribute in resource definition.
  
