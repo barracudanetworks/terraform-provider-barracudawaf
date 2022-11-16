@@ -1,6 +1,6 @@
 # Overview #
 
-A [Terraform](https://www.terraform.io/) provider for Barracuda Web Application Firewall.
+A [Terraform](https://www.terraform.io/) provider for Barracuda Web Application Firewall (all form factors except waf-as-a-service).
 
 &nbsp;
 ## Requirements ##
