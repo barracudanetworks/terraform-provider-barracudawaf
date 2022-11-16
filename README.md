@@ -8,6 +8,7 @@ A [Terraform](https://www.terraform.io/) provider for Barracuda Web Application 
 -	[Go](https://golang.org/doc/install) 1.15 (to build the provider plugin)
 
 &nbsp;
+
 ## Usage ##
 
 **Use provider**
